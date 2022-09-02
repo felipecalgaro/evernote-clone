@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 const User = require('../models/User')
 
-const WithAuth = (req, res) => {
+const WithAuth = (req, res, next) => {
   const token = req.headers['x-access-token'] // token is sent through req headers
 
   if (!token) {
