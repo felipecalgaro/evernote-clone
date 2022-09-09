@@ -63,9 +63,10 @@ router.put('/:id', withAuth, async (req, res) => {
     const note = await Note.findById(id)
 
     if (isOwner(req.user, note)) {
-      const note = await Note.findOneAndUpdate(id,
+      const note = await Note.findOneAndUpdate(
+        { _id: id },
         { $set: { title, body } },
-        { upsert: true, returnNewDocument: true }
+        { upsert: true, 'new': true }
       )
 
       res.json(note)
@@ -96,6 +97,7 @@ router.delete('/:id', withAuth, async (req, res) => {
 })
 
 const isOwner = (user, note) => {
+  console.log('user id: ', user._id, '\nauthor id: ', note.author._id);
   if (JSON.stringify(user._id) == JSON.stringify(note.author._id)) {
     return true
   } else {
